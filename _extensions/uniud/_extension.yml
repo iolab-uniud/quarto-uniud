@@ -19,6 +19,11 @@ contributes:
             <script src="mathjax-config.js"></script>
       format-resources:
         - mathjax-config.js
+        - assets/uniud-logo-blue.svg
+        - assets/uniud-logo-white.svg
+        - assets/uniud-logo-gray.svg        
+      filters:
+        - section-slides.lua
     typst:
       typst-cli-args: ["--root", "."]
       template-partials:

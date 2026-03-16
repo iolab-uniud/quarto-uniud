@@ -1,60 +1,133 @@
 /*-- scss:defaults --*/
 
-// Custom colours and variables
+// ── Colori ufficiali UNIUD (Manuale identità visiva 2025) ─────
+$uniud-blue:  #0000ff;   // Pantone 072 U
+$uniud-gray:  #b3b6b7;   // Pantone 877 U
+$jet:         #131516;
+$accent:      $uniud-blue;
+$accent2:     #9a2515;
+$right-arrow: "\2192";
 
-$jet: #131516;
-$accent: #107895;
-$accent2: #9a2515;
-// $accent2: #e64173;
-$right-arrow: "\2192"; // Unicode character for right arrow
+// ── Font (Work Sans — fallback ufficiale manuale 2025) ────────
+// Work Sans Regular (400)  → testo corrente
+// Work Sans SemiBold (600) → titoli di secondo livello
+// Work Sans Black (900)    → titoli principali
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,600;1,400&display=swap');
 
-// fonts
+$font-family-sans-serif:           "Work Sans", sans-serif !default;
+$presentation-heading-font:        "Work Sans", sans-serif !default;
+$presentation-heading-font-weight: 700;
+$presentation-heading-color:       $jet !default;
+$presentation-font-size-root:      32px;
 
-/*
-Note: This theme uses the Roboto font family, which it imports from Google
-  Fonts to ensure consistent weighting in addition to availability. While
-  you can use a local installation of Roboto, this is generally not 
-  recommended since the weighting will likely be wrong (probably too
-  light). OTOH, importing from Google Fonts can cause some issues in
-  certain secure environments due the external CDN (see:
-  https://github.com/grantmcdermott/quarto-revealjs-clean/issues/7). If
-  that's the case for you, simply comment out the `@import url(...)` line
-  below and it will default for the default Sans Serif font on your system
-  (e.g., Helvetica on a Mac). Circling back to the earlier point about
-  preserving consistent font weights, you may also wish to remove "Roboto"
-  from the choice set if the family is installed locally.
-*/
-@import url('https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i&display=swap');
+$font-family-monospace: "Roboto Mono", monospace !default;
 
-$font-family-sans-serif: "Roboto", sans-serif !default;
-$presentation-heading-font: "Roboto", sans-serif !default;
-
-$presentation-heading-color: $jet !default;
-$presentation-heading-font-weight: lighter;
-//$presentation-heading-line-height: 2;
-//$presentation-block-margin: 28px;
-$presentation-font-size-root: 32px;
-
-// colors
-//$body-bg: #f0f1eb !default;
-$body-color: $jet !default;
-$link-color: $accent !default;
-$selection-bg: #26351c !default;
-
+// ── Colori base ───────────────────────────────────────────────
+$body-color:  $jet !default;
+$link-color:  $accent !default;
+$selection-bg: #0000aa !default;
 
 /*-- scss:rules --*/
 
-.reveal a {
-  line-height: 1.5em;
-}
+.reveal a { line-height: 1.5em; }
 
 .reveal p {
-  // font-weight: 300;
-  font-weight: lighter;
+  font-weight: 400;
   margin-top: 1.25em;
 }
 
-// title and headings
+// ── Titoli ────────────────────────────────────────────────────
+
+.reveal h2 {
+  font-weight: 700;   // Work Sans Black
+  font-size: 1.4em;
+}
+
+.reveal h3 {
+  color: $accent;
+  font-style: italic;
+  font-weight: 650;   // Work Sans SemiBold
+  font-size: 0.95em;
+}
+
+.reveal h4 {
+  color: $accent2;
+  font-weight: 650;
+  margin-top: 1.25em;
+}
+
+.reveal strong {
+  font-weight: 600;
+}
+
+// ── Slide di sezione — sfondo blu automatico su h1 ────────────
+
+// ── Slide di sezione (h1) — sfondo blu gestito dal filtro Lua ─
+// RevealJS applica .has-dark-background alle sezioni con sfondo scuro
+.reveal .has-dark-background {
+  h1, h2, h3, p, li { color: #ffffff; }
+  li::marker { color: rgba(255, 255, 255, 0.6); }
+}
+
+// Logo e slide number su sfondi scuri
+.reveal.has-dark-background .slide-logo {
+  filter: brightness(0) invert(1);
+}
+.reveal.has-dark-background .slide-number {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+// Logo bianco quando la slide corrente è di sezione (level1)
+// Funziona con :has() — supportato in Chromium/RevealJS
+.reveal:has(.slides section.level1.present) .slide-logo {
+  filter: brightness(0) invert(1);
+}
+
+// Slide number invisibile sulle slide di sezione
+.reveal:has(.slides section.level1.present) .slide-number {
+  opacity: 0;
+}
+
+// ── Slide con sfondo nero (.black-slide) ──────────────────────
+// Uso: ## Titolo {.black-slide}
+
+.reveal .slides section.black-slide {
+  background-color: #000000;
+
+  h2, h3, h4, p, li { color: #ffffff; }
+
+  li::marker { color: rgba(255,255,255,0.6); }
+}
+
+.reveal:has(.slides section.black-slide.present) .slide-logo {
+  filter: brightness(0) invert(1);
+}
+
+.reveal:has(.slides section.black-slide.present) .slide-number {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+// ── Slide con sfondo grigio (.gray-slide) ─────────────────────
+// Uso: ## Titolo {.gray-slide}
+
+.reveal .slides section.gray-slide {
+  background-color: $uniud-gray;
+
+  h2, h3, h4, p, li { color: #ffffff; }
+
+  li::marker { color: rgba(255,255,255,0.6); }
+}
+
+.reveal:has(.slides section.gray-slide.present) .slide-logo {
+  filter: brightness(0) invert(1);
+}
+
+.reveal:has(.slides section.gray-slide.present) .slide-number {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+// ── Title slide ───────────────────────────────────────────────
 
 #title-slide {
   text-align: left;
@@ -62,23 +135,20 @@ $selection-bg: #26351c !default;
   .title {
     color: $body-color;
     font-size: 1.4em;
-    // font-weight: 350;
-    font-weight: lighter;
+    font-weight: 700;
   }
 
   .subtitle {
     color: $accent;
     font-style: italic;
     margin-top: 0em;
-    font-weight: lighter;
+    font-weight: 400;
   }
 
   .institute,
   .quarto-title-affiliation,
   .quarto-title-author-email {
     font-style: italic;
-    // font-size: 80%;
-    // color: #7F7F7F;
   }
 
   .author,
@@ -96,40 +166,13 @@ $selection-bg: #26351c !default;
       width: 100%;
     }
   }
-
 }
 
+// ── Alerts ────────────────────────────────────────────────────
 
-.reveal h2 {
-  // font-weight: 350;
-  font-weight: lighter;
-  font-size: 1.4em;
-}
+.alert { color: $accent2; }
 
-.reveal h3 {
-  color: $accent;
-  font-style: italic;
-  // font-weight: 350;
-  font-weight: lighter;
-  font-size: 0.95em;
-}
-
-.reveal h4 {
-  color: $accent2;
-  // font-weight: 350;
-  font-weight: normal;
-  margin-top: 1.25em;
-}
-
-// alerts etc.
-
-.alert {
-  color: $accent2;
-}
-
-.fg {
-  color: var(--col, $jet);
-}
+.fg { color: var(--col, $jet); }
 
 .bg {
   background-color: var(--col, #fff);
@@ -138,18 +181,13 @@ $selection-bg: #26351c !default;
   display: inline-block;
 }
 
-// lists
-
-// Unordered lists
+// ── Liste ─────────────────────────────────────────────────────
 
 .reveal ul {
-  // font-weight: 300;
-  font-weight: lighter;
+  font-weight: 400;
   padding-left: 16px;
 
-  li::marker {
-    color: mix($accent, white, 70%);
-  }
+  li::marker { color: mix($accent, white, 70%); }
 }
 
 .reveal ul ul {
@@ -165,63 +203,43 @@ $selection-bg: #26351c !default;
   }
 }
 
-// Ordered lists
-
 .reveal ol {
-  // font-weight: 300;
-  font-weight: lighter;
+  font-weight: 400;
   padding-left: 16px;
 
-  li::marker {
-    color: $accent;
-  }
+  li::marker { color: $accent; }
 }
 
-// Move "hamburger" menu button to top right
+// ── Menu e chalkboard ─────────────────────────────────────────
 
 .reveal .slide-menu-button {
-  position: fixed;
-  top: 6px;
-  right: 0;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  position: fixed; top: 6px; right: 0;
+  display: flex; justify-content: flex-end; align-items: flex-start;
   pointer-events: none;
 }
-
-.reveal .slide-menu-button > * {
-  pointer-events: auto;
-}
-
-// Same for chalkboard buttons (with an offset)
+.reveal .slide-menu-button > * { pointer-events: auto; }
 
 .reveal .slide-chalkboard-buttons {
-  position: fixed;
-  top: 12px;
-  right: 24px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  position: fixed; top: 12px; right: 24px;
+  display: flex; justify-content: flex-end; align-items: flex-start;
   pointer-events: none;
 }
+.reveal .slide-chalkboard-buttons > * { pointer-events: auto; }
 
-.reveal .slide-chalkboard-buttons > * {
-  pointer-events: auto;
-}
+// ── Logo bottom-left ──────────────────────────────────────────
 
-// Logo to the bottom-left
 .slide-logo {
   display: block !important;
   position: fixed !important;
   bottom: 0 !important;
   left: 10px !important;
-  max-width: 150px; // Adjust if necessary
+  max-width: 150px;
   max-height: 50px;
   width: auto !important;
   color: $body-color !important;
+  transition: filter 0.3s ease;
 }
 
-// Also need to enforce slide numbers at bottom-right (if logo is present)
 .slide-number, .reveal.has-logo .slide-number {
   bottom: 6px !important;
   right: 10px !important;
@@ -229,14 +247,13 @@ $selection-bg: #26351c !default;
   color: #777777 !important;
 }
 
-// Beamer-style button link environment
+// ── Button (beamer-style) ─────────────────────────────────────
 
 .button {
   display: inline-block;
   padding: 6px 12px;
-  margin-bottom: 0;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.42857143;
   text-align: center;
   white-space: nowrap;
@@ -249,21 +266,15 @@ $selection-bg: #26351c !default;
   border-radius: 4px;
   transition: all 0.2s ease-in-out;
 }
-
 .button:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: #0000cc;
+  border-color: #0000cc;
 }
+.button::before { content: "▶"; margin-right: 5px; }
 
-.button::before {
-  content: "▶";
-  margin-right: 5px;
-}
-
-// tables
+// ── Tabelle ───────────────────────────────────────────────────
 
 .reveal table {
-  // height: auto; /* Adjust table width to fit content up to the available slide space */
   margin: auto;
   border-collapse: collapse;
   border-spacing: 0;
@@ -272,80 +283,47 @@ $selection-bg: #26351c !default;
 
 .reveal table th,
 .reveal table td {
-  border: none; /* Remove internal row lines */
-  padding: .23em; /* Adjust padding as needed */
-  text-align: left; /* Adjust text alignment as needed */
-  font-weight: lighter; /* Lighter font weight for main table text */
+  border: none;
+  padding: .23em;
+  text-align: left;
+  font-weight: 400;
 }
 
-/* Adds a bottom border to the table header row for distinction */
 .reveal table thead th,
 .reveal .slides table tr:last-child td,
 .reveal .slides table {
-  border-bottom: 2px solid #D3D3D3; /* Dark grey color for the bottom border */
+  border-bottom: 2px solid $uniud-gray;
 }
 
-/* Make column headers bold */
-.reveal table thead th {
-  font-weight: bold;
-}
+.reveal table thead th { font-weight: 900; }
 
-/* Styling table captions */
 .reveal table caption {
-  color: #666666; /* Dark grey color for the caption */
-  font-variant: small-caps; /* Use small caps for the caption text */
+  color: #666666;
+  font-variant: small-caps;
 }
 
-// Special catch for etable environment to ensure these table images
-// don't overflow the slide.
-// See: https://lrberge.github.io/fixest/articles/etable_new_features.html
+// ── etable ────────────────────────────────────────────────────
 
 .etable {
   width: 100%;
-  height: calc(100% - 3em); /* Adjust 3em based on the height of your header, if necessary */
+  height: calc(100% - 3em);
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .etable img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
   object-fit: contain;
 }
 
-// Change the relative widths of `output-location: column`. 
-// See: https://github.com/grantmcdermott/quarto-revealjs-clean/pull/16
-// Example usage:
-// ```{python}
-// #| echo: true
-// #| output-location: column
-// #| classes: columns3070
-// <code>
-// ```
-.reveal .columns3070 > div.column:first-child {
-  width: 30%;
-}
-.reveal .columns3070 div.column:not(:first-child) {
-  width: 70%;
-}
-.reveal .columns7030 > div.column:first-child {
-  width: 70%;
-}
-.reveal .columns7030 div.column:not(:first-child) {
-  width: 30%;
-}
-.reveal .columns4060 > div.column:first-child {
-  width: 40%;
-}
-.reveal .columns4060 div.column:not(:first-child) {
-  width: 60%;
-}      
-.reveal .columns6040 > div.column:first-child {
-  width: 60%;
-}
-.reveal .columns6040 div.column:not(:first-child) {
-  width: 40%;
-}      
+// ── Column split utilities ────────────────────────────────────
+
+.reveal .columns3070 > div.column:first-child      { width: 30%; }
+.reveal .columns3070 div.column:not(:first-child)  { width: 70%; }
+.reveal .columns7030 > div.column:first-child      { width: 70%; }
+.reveal .columns7030 div.column:not(:first-child)  { width: 30%; }
+.reveal .columns4060 > div.column:first-child      { width: 40%; }
+.reveal .columns4060 div.column:not(:first-child)  { width: 60%; }
+.reveal .columns6040 > div.column:first-child      { width: 60%; }
+.reveal .columns6040 div.column:not(:first-child)  { width: 40%; }

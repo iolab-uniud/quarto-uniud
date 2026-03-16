@@ -1,5 +1,7 @@
 // ================================================================
-//  UNIUD Lecture Notes
+//  UNIUD Lecture Notes — Typst template
+//  Conforme al Manuale di Identità Visiva 2025
+//  Font: Work Sans (Regular / SemiBold / Bold)
 // ================================================================
 
 #let uniud-notes(
@@ -8,6 +10,7 @@
   authors:  (),
   date:     none,
   course:   none,
+  logo:     "/_extensions/iolab-uniud/uniud/assets/uniud-logo-blue.svg",
   body,
 ) = {
 
@@ -16,14 +19,21 @@
     author: authors.map(a => a.at("name", default: "")),
   )
 
-  // ── Colori ────────────────────────────────────────────────────
-  let uniud-blue  = rgb("#003DA5")
+  // ── Colori ufficiali UNIUD ────────────────────────────────────
+  let uniud-blue  = rgb("#0000ff")   // Pantone 072 U
+  let uniud-gray  = rgb("#b3b6b7")   // Pantone 877 U
+  let jet         = rgb("#131516")
   let gray-mid    = rgb("#555555")
-  let gray-light  = rgb("#CCCCCC")
-  let code-bg     = rgb("#F5F7FA")
-  let code-border = rgb("#D0D7E3")
+  let code-bg     = rgb("#f0f0ff")
+  let code-border = rgb("#c0c0e8")
 
-  // ── Pagina ────────────────────────────────────────────────────
+  // ── Font helper ───────────────────────────────────────────────
+  // Work Sans Regular   — testo corrente
+  // Work Sans SemiBold  — titoli h3, didascalie
+  // Work Sans Bold      — titoli h1, h2, frontespizio
+  let ws = "Work Sans"
+
+  // ── Pagina base ───────────────────────────────────────────────
   set page(
     paper:  "a4",
     margin: (top: 2.8cm, bottom: 2.5cm, left: 2.5cm, right: 2.2cm),
@@ -33,8 +43,10 @@
         grid(
           columns: (1fr, auto),
           align:   (left + horizon, right + horizon),
-          text(size: 8.5pt, fill: gray-mid, style: "italic")[#title],
-          image("/images/uniud_logotipo blu_03.svg", height: 0.55cm),
+          gutter:  8pt,
+          text(font: ws, size: 8.5pt, fill: gray-mid, style: "italic",
+               weight: "regular")[#title],
+          image(logo, height: 2cm),
         )
         v(-4pt)
         line(length: 100%, stroke: 0.5pt + uniud-blue)
@@ -43,13 +55,13 @@
 
     footer: context {
       if counter(page).get().first() > 1 {
-        line(length: 100%, stroke: 0.4pt + gray-light)
+        line(length: 100%, stroke: 0.4pt + uniud-gray)
         v(-4pt)
         grid(
           columns: (1fr, auto),
           align:   (left + horizon, right + horizon),
-          text(size: 8pt, fill: gray-mid)[#course],
-          text(size: 8pt, fill: gray-mid)[
+          text(font: ws, size: 8pt, fill: gray-mid, weight: "regular")[#course],
+          text(font: ws, size: 8pt, fill: gray-mid, weight: "regular")[
             #counter(page).display() / #counter(page).final().first()
           ],
         )
@@ -57,9 +69,8 @@
     },
   )
 
-  // ── Tipografia ────────────────────────────────────────────────
-  set text(font: ("Linux Libertine", "Georgia", "Times New Roman"),
-           size: 11pt, lang: "it")
+  // ── Tipografia base ───────────────────────────────────────────
+  set text(font: ws, size: 11pt, lang: "it", weight: "regular")
   set par(justify: true, leading: 0.72em, spacing: 1.2em)
 
   // ── Titoli ────────────────────────────────────────────────────
@@ -68,7 +79,7 @@
   show heading.where(level: 1): it => {
     v(1.4em, weak: true)
     block[
-      #text(size: 15pt, weight: "bold", fill: uniud-blue)[
+      #text(font: ws, size: 15pt, weight: "bold", fill: uniud-blue)[
         #counter(heading).display("1  ")#it.body
       ]
       #v(2pt)
@@ -79,7 +90,7 @@
 
   show heading.where(level: 2): it => {
     v(1.1em, weak: true)
-    text(size: 12.5pt, weight: "bold", fill: uniud-blue)[
+    text(font: ws, size: 12.5pt, weight: "bold", fill: uniud-blue)[
       #counter(heading).display("1.1  ")#it.body
     ]
     v(0.4em, weak: true)
@@ -87,57 +98,64 @@
 
   show heading.where(level: 3): it => {
     v(0.9em, weak: true)
-    text(size: 11pt, weight: "semibold", fill: gray-mid)[#it.body]
+    text(font: ws, size: 11pt, weight: "semibold", fill: gray-mid)[#it.body]
     v(0.3em, weak: true)
   }
 
-  // ── Codice ────────────────────────────────────────────────────
-  show raw.where(block: true): it => block(
-    fill:   code-bg,
-    stroke: 0.5pt + code-border,
-    radius: 4pt,
-    inset:  (x: 14pt, y: 10pt),
-    width:  100%,
-    text(
-      font: ("JetBrains Mono", "Fira Code", "Cascadia Code", "Courier New"),
-      size: 9pt,
-      it,
-    ),
-  )
-
+  // ── Codice inline ─────────────────────────────────────────────
   show raw.where(block: false): it => box(
-    fill:   rgb("#EAEEF5"),
+    fill:   code-bg,
     stroke: 0.3pt + code-border,
     radius: 2pt,
     inset:  (x: 3pt, y: 1pt),
     text(
-      font: ("JetBrains Mono", "Fira Code", "Cascadia Code", "Courier New"),
-      size: 0.88em,
+      font:   ("Roboto Mono", "Courier New"),
+      size:   0.88em,
+      weight: "regular",
       it,
     ),
   )
 
-  // ── Frontespizio ─────────────────────────────────────────────
+  // ── Codice blocco ─────────────────────────────────────────────
+  show raw.where(block: true): it => block(
+    fill:   code-bg,
+    stroke: (left: 3pt + uniud-blue, rest: 0.5pt + code-border),
+    radius: (right: 4pt),
+    inset:  (x: 14pt, y: 10pt),
+    width:  100%,
+    text(
+      font:   ("Roboto Mono", "Courier New"),
+      size:   9pt,
+      weight: "regular",
+      it,
+    ),
+  )
+
+  // ── Link ──────────────────────────────────────────────────────
+  show link: it => text(fill: uniud-blue, it)
+
+  // ── Frontespizio ──────────────────────────────────────────────
   page(
     margin: (top: 3cm, bottom: 2.5cm, left: 2.5cm, right: 2.2cm),
     header: none,
     footer: none,
   )[
     #align(right)[
-      #image("/images/uniud_logotipo blu_03.svg", width: 5cm)
+      #image(logo, width: 5cm)
     ]
     #v(2.5cm)
 
     #if course != none {
-      text(size: 13pt, fill: uniud-blue, weight: "medium")[#course]
+      text(font: ws, size: 13pt, weight: "bold", fill: uniud-blue)[#course]
       v(0.5cm)
     }
 
-    #text(size: 26pt, weight: "bold")[#title]
+    #text(font: ws, size: 28pt, weight: "bold")[#title]
 
     #if subtitle != none {
       v(0.4cm)
-      text(size: 15pt, fill: gray-mid)[#subtitle]
+      text(font: ws, size: 15pt, weight: "regular", style: "italic",
+           fill: gray-mid)[#subtitle]
     }
 
     #v(0.8cm)
@@ -145,11 +163,12 @@
     #v(0.6cm)
 
     #for a in authors [
-      #text(size: 12pt, weight: "semibold")[#a.at("name", default: "")]
+      #text(font: ws, size: 12pt, weight: "bold")[#a.at("name", default: "")]
       #if "email" in a [
         \
-        #text(size: 9pt, fill: uniud-blue)[
-          #link("mailto:" + a.at("email"))[#a.at("email")]
+        #let email = a.at("email").replace("\\@", "@")
+        #text(font: ws, size: 9pt, weight: "regular", fill: uniud-blue)[
+          #link("mailto:" + email)[#email]
         ]
       ]
       #v(0.25cm)
@@ -157,35 +176,25 @@
 
     #v(1fr)
     #if date != none {
-      text(size: 9.5pt, fill: gray-mid)[#date]
+      text(font: ws, size: 9.5pt, weight: "regular", fill: gray-mid)[#date]
     }
   ]
 
   // ── Indice ────────────────────────────────────────────────────
-  outline(title: [Indice], depth: 2, indent: 1.2em)
+  show outline.entry.where(level: 1): it => {
+    v(6pt, weak: true)
+    text(font: ws, weight: "bold", it)
+  }
+
+  outline(
+    title: text(font: ws, size: 15pt, weight: "bold",
+                fill: uniud-blue)[Indice],
+    depth: 2,
+    indent: 1.2em,
+  )
+
   pagebreak(weak: true)
 
+  // ── Corpo ─────────────────────────────────────────────────────
   body
 }
-```
-
----
-
-**`_templates/typst-show.typ`** — partial Pandoc (attenzione: usa la sintassi `$...$` di Pandoc, **non** Typst):
-```
-#import "_templates/uniud-notes.typ": uniud-notes
-
-#show: uniud-notes.with(
-$if(title)$  title:    [$title$],$endif$
-$if(subtitle)$  subtitle: [$subtitle$],$endif$
-$if(date)$  date:     [$date$],$endif$
-$if(course)$  course:   [$course$],$endif$
-  authors: (
-$for(by-author)$
-    (
-      name:  "$it.name.literal$"
-$if(it.email)$      , email: "$it.email$"$endif$
-    ),
-$endfor$
-  ),
-)

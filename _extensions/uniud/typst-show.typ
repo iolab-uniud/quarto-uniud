@@ -5,6 +5,7 @@ $if(title)$  title:    [$title$],$endif$
 $if(subtitle)$  subtitle: [$subtitle$],$endif$
 $if(date)$  date:     [$date$],$endif$
 $if(course)$  course:   [$course$],$endif$
+$if(typst-logo)$  logo: "$typst-logo$",$endif$
   authors: (
 $for(by-author)$
     (

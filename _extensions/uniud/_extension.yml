@@ -11,6 +11,7 @@ contributes:
         side: left
       slide-number: true
       date-format: long
+      logo: "assets/uniud-logo-blue.svg"
       html-math-method:
         method: mathjax
         url: "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"

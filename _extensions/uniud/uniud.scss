@@ -11,7 +11,7 @@ $right-arrow: "\2192";
 // ── Font (Work Sans — fallback ufficiale manuale 2025) ────────
 // Work Sans Regular (400)  → testo corrente
 // Work Sans SemiBold (600) → titoli di secondo livello
-// Work Sans Black (900)    → titoli principali
+// Work Sans Bold (700)     → titoli principali
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,600;1,400&display=swap');
 
@@ -20,12 +20,11 @@ $presentation-heading-font:        "Work Sans", sans-serif !default;
 $presentation-heading-font-weight: 700;
 $presentation-heading-color:       $jet !default;
 $presentation-font-size-root:      32px;
-
-$font-family-monospace: "Roboto Mono", monospace !default;
+$font-family-monospace:            "Roboto Mono", monospace !default;
 
 // ── Colori base ───────────────────────────────────────────────
-$body-color:  $jet !default;
-$link-color:  $accent !default;
+$body-color:   $jet !default;
+$link-color:   $accent !default;
 $selection-bg: #0000aa !default;
 
 /*-- scss:rules --*/
@@ -40,20 +39,20 @@ $selection-bg: #0000aa !default;
 // ── Titoli ────────────────────────────────────────────────────
 
 .reveal h2 {
-  font-weight: 700;   // Work Sans Black
+  font-weight: 700;
   font-size: 1.4em;
 }
 
 .reveal h3 {
   color: $accent;
   font-style: italic;
-  font-weight: 650;   // Work Sans SemiBold
+  font-weight: 600;
   font-size: 0.95em;
 }
 
 .reveal h4 {
   color: $accent2;
-  font-weight: 650;
+  font-weight: 600;
   margin-top: 1.25em;
 }
 
@@ -61,30 +60,31 @@ $selection-bg: #0000aa !default;
   font-weight: 600;
 }
 
-// ── Slide di sezione — sfondo blu automatico su h1 ────────────
+// ── Slide di sezione (h1) — sfondo blu via filtro Lua ─────────
+// RevealJS aggiunge .has-dark-background automaticamente
+// quando data-background-color è scuro
 
-// ── Slide di sezione (h1) — sfondo blu gestito dal filtro Lua ─
-// RevealJS applica .has-dark-background alle sezioni con sfondo scuro
 .reveal .has-dark-background {
-  h1, h2, h3, p, li { color: #ffffff; }
+  h1, h2, h3, h4, p, li { color: #ffffff; }
   li::marker { color: rgba(255, 255, 255, 0.6); }
+
+  // Frecce sottoliste
+  ul ul li:before { color: rgba(255, 255, 255, 0.6); }
 }
 
-// Logo e slide number su sfondi scuri
+// Logo: passa a bianco su sfondi scuri
+// .has-dark-background è sulla .reveal root quando la slide corrente è scura
 .reveal.has-dark-background .slide-logo {
   filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
 }
+
+// Slide number: visibile ma attenuato su sfondi scuri
 .reveal.has-dark-background .slide-number {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-// Logo bianco quando la slide corrente è di sezione (level1)
-// Funziona con :has() — supportato in Chromium/RevealJS
-.reveal:has(.slides section.level1.present) .slide-logo {
-  filter: brightness(0) invert(1);
-}
-
-// Slide number invisibile sulle slide di sezione
+// Nascondi slide number sulle slide di sezione (level1 = solo titolo)
 .reveal:has(.slides section.level1.present) .slide-number {
   opacity: 0;
 }
@@ -94,18 +94,6 @@ $selection-bg: #0000aa !default;
 
 .reveal .slides section.black-slide {
   background-color: #000000;
-
-  h2, h3, h4, p, li { color: #ffffff; }
-
-  li::marker { color: rgba(255,255,255,0.6); }
-}
-
-.reveal:has(.slides section.black-slide.present) .slide-logo {
-  filter: brightness(0) invert(1);
-}
-
-.reveal:has(.slides section.black-slide.present) .slide-number {
-  color: rgba(255,255,255,0.5) !important;
 }
 
 // ── Slide con sfondo grigio (.gray-slide) ─────────────────────
@@ -113,18 +101,6 @@ $selection-bg: #0000aa !default;
 
 .reveal .slides section.gray-slide {
   background-color: $uniud-gray;
-
-  h2, h3, h4, p, li { color: #ffffff; }
-
-  li::marker { color: rgba(255,255,255,0.6); }
-}
-
-.reveal:has(.slides section.gray-slide.present) .slide-logo {
-  filter: brightness(0) invert(1);
-}
-
-.reveal:has(.slides section.gray-slide.present) .slide-number {
-  color: rgba(255,255,255,0.5) !important;
 }
 
 // ── Title slide ───────────────────────────────────────────────
@@ -171,8 +147,7 @@ $selection-bg: #0000aa !default;
 // ── Alerts ────────────────────────────────────────────────────
 
 .alert { color: $accent2; }
-
-.fg { color: var(--col, $jet); }
+.fg    { color: var(--col, $jet); }
 
 .bg {
   background-color: var(--col, #fff);
@@ -295,7 +270,7 @@ $selection-bg: #0000aa !default;
   border-bottom: 2px solid $uniud-gray;
 }
 
-.reveal table thead th { font-weight: 900; }
+.reveal table thead th    { font-weight: 700; }
 
 .reveal table caption {
   color: #666666;

@@ -1,0 +1,24 @@
+# Quarto
+.quarto/
+_site/
+_freeze/
+*_files/
+**/*.quarto_ipynb
+
+# Typst render artifacts (keep extension sources)
+*.pdf
+*.typ
+!_extensions/uniud/typst-show.typ
+!_extensions/uniud/uniud-notes.typ
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs
+*.log

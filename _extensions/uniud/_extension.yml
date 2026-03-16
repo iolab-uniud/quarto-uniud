@@ -17,9 +17,9 @@ contributes:
         url: "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
       include-before-body:
         - text: |
-            <script src="mathjax-config.js"></script>
+            <script src="assets/mathjax-config.js"></script>
       format-resources:
-        - mathjax-config.js
+        - assets/mathjax-config.js
         - assets/uniud-logo-blue.svg
         - assets/uniud-logo-white.svg
         - assets/uniud-logo-gray.svg 

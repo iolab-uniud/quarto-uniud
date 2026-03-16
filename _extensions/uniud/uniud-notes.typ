@@ -10,6 +10,7 @@
   authors:  (),
   date:     none,
   course:   none,
+  lang:     "en",
   logo:     "/_extensions/iolab-uniud/uniud/assets/uniud-logo-blue.svg",
   body,
 ) = {
@@ -70,7 +71,7 @@
   )
 
   // ── Tipografia base ───────────────────────────────────────────
-  set text(font: ws, size: 11pt, lang: "it", weight: "regular")
+  set text(font: ws, size: 11pt, lang: lang, weight: "regular")
   set par(justify: true, leading: 0.72em, spacing: 1.2em)
 
   // ── Titoli ────────────────────────────────────────────────────
@@ -189,7 +190,7 @@
   outline(
     title: text(font: ws, size: 15pt, weight: "bold",
                 fill: uniud-blue)[
-                  #if text.lang == "it" [Indice] else [Table of Contents]
+                  #context if text.lang == "it" [Indice] else [Table of Contents]
                 ],
     depth: 2,
     indent: 1.2em,

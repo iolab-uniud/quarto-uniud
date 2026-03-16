@@ -207,9 +207,9 @@ $selection-bg: #0000aa !default;
   display: block !important;
   position: fixed !important;
   bottom: 0 !important;
-  left: 10px !important;
-  max-width: 220px;   // era 150px
-  max-height: 70px;   // era 50px
+  left: 0 !important;
+  // max-width: 250px;   // was 150px
+  max-height: 4.5em !important;   // was 50px
   width: auto !important;
   color: $body-color !important;
   transition: filter 0.3s ease;

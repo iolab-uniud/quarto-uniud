@@ -22,3 +22,5 @@ _freeze/
 
 # Logs
 *.log
+
+/.luarc.json

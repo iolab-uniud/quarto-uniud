@@ -188,7 +188,9 @@
 
   outline(
     title: text(font: ws, size: 15pt, weight: "bold",
-                fill: uniud-blue)[Indice],
+                fill: uniud-blue)[
+                  #if text.lang == "it" [Indice] else [Table of Contents]
+                ],
     depth: 2,
     indent: 1.2em,
   )

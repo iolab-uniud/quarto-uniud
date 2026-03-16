@@ -21,7 +21,8 @@ contributes:
         - mathjax-config.js
         - assets/uniud-logo-blue.svg
         - assets/uniud-logo-white.svg
-        - assets/uniud-logo-gray.svg        
+        - assets/uniud-logo-gray.svg 
+        - assets/uniud-logo-black.svg         
       filters:
         - section-slides.lua
     typst:
